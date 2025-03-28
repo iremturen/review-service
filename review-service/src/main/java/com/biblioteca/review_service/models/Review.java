@@ -12,13 +12,13 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reviews  implements Serializable {
+public class Review  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private String bookId;
-    private String userId;
+    private Integer bookId;
+    private Integer userId;
     private String comment;
     private Date createdAt;
     private Date updatedAt;

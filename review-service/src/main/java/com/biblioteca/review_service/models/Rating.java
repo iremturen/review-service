@@ -17,8 +17,8 @@ public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private String bookId;
-    private String userId;
+    private Integer bookId;
+    private Integer userId;
     private Integer rating;
     private Date createdAt;
     private Date updatedAt;
