@@ -42,4 +42,9 @@ public class ReviewService implements IReviewService {
     public void removeReview(Integer reviewId) {
         reviewRepository.removeReview(reviewId);
     }
+
+    @Override
+    public void updateReview(Review review) {
+        reviewRepository.updateReview(review);
+    }
 }

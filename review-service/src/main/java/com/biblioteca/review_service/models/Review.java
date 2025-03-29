@@ -19,7 +19,7 @@ public class Review  implements Serializable {
     private Integer id;
     private Integer bookId;
     private Integer userId;
-    private String comment;
+    private String review;
     private Date createdAt;
     private Date updatedAt;
 

@@ -13,4 +13,5 @@ public interface IReviewService {
     Integer getReviewCount(Integer bookId);
     void addReview(Review review);
     void removeReview(Integer reviewId);
+    void updateReview(Review review);
 }

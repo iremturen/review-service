@@ -8,7 +8,8 @@ public interface IRatingRepository {
     Double getAverageRating(Integer bookId);
     List<Rating> getAllRatings(Integer bookId);
     List<Rating> getUserRatings(Integer userId);
-    Integer getRatingCount(Integer bookId, Integer userId);
+    Integer getRatingCount(Integer bookId);
     void addRating(Rating rating);
     void removeRating(Integer ratingId);
+    void updateRating(Rating rating);
 }

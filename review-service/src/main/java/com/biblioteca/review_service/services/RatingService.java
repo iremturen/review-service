@@ -29,8 +29,8 @@ public class RatingService implements IRatingService{
     }
 
     @Override
-    public Integer getRatingCount(Integer bookId, Integer userId) {
-        return ratingRepository.getRatingCount(bookId, userId);
+    public Integer getRatingCount(Integer bookId) {
+        return ratingRepository.getRatingCount(bookId);
     }
 
     @Override
@@ -46,5 +46,10 @@ public class RatingService implements IRatingService{
     @Override
     public void removeRating(Integer ratingId) {
         ratingRepository.removeRating(ratingId);
+    }
+
+    @Override
+    public void updateRating(Rating rating) {
+        ratingRepository.updateRating(rating);
     }
 }
