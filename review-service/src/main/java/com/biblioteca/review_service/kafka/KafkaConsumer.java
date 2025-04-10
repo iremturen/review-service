@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaConsumer {
-    @KafkaListener(topics = "review-topic", groupId = "review-group")
+    @KafkaListener(
+            topics = "review-topic",
+            groupId = "review-group",
+            containerFactory = "stringKafkaListenerContainerFactory")
     public void consumeReviewMessage(String message) {
         System.out.println("Received review message: " + message);
     }
