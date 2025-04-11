@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,18 +81,6 @@ public class RatingController {
             err.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }   
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<?> updateRating(@RequestBody Rating rating) {
-        try {
-            ratingService.updateRating(rating);
-            return ResponseEntity.ok().build();
-        } catch (BadRequestException | InvalidParameterException e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-        }
     }
 
     @DeleteMapping("/remove")

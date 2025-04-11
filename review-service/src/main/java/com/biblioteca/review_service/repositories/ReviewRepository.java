@@ -63,13 +63,4 @@ public class ReviewRepository implements IReviewRepository {
         jdbcTemplateNamed.update(sql, mapParams);
     }
 
-    @Override
-    public void updateReview(Review review) {
-        String sql = "UPDATE reviews SET review = :review, updatedAt = :updatedAt WHERE id = :reviewId";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("review", review.getReview());
-        mapParams.addValue("updatedAt", review.getUpdatedAt());
-        mapParams.addValue("reviewId", review.getId());
-        jdbcTemplateNamed.update(sql, mapParams);
-    }
 }

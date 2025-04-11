@@ -54,11 +54,6 @@ public class RatingConsumer {
                     logger.info("Deleted rating with ID: {}", rating.getId());
                     break;
 
-                case "UPDATE":
-                    ratingService.updateRating(rating);
-                    logger.info("Updated rating: {}", rating);
-                    break;
-
                 case "GET_ALL":
                     List<Rating> allRatings = ratingService.getAllRatings(message.getBookId());
                     logger.info("Retrieved all ratings for book ID: {}", message.getBookId());

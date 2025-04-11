@@ -35,11 +35,6 @@ public class ReviewConsumer {
                     logger.info("Deleted review with ID: {}", message.getReview().getId());
                     break;
 
-                case "UPDATE":
-                    reviewService.updateReview(message.getReview());
-                    logger.info("Updated review: {}", message.getReview());
-                    break;
-
                 case "GET_ALL":
                     reviewService.getAllReviews(message.getReview().getBookId());
                     logger.info("Retrieved all reviews");

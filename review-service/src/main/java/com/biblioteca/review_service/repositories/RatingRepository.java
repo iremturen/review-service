@@ -50,15 +50,29 @@ public class RatingRepository implements IRatingRepository{
 
     @Override
     public void addRating(Rating rating) {
-        String sql = "INSERT INTO RATING (BOOKID, USERID, RATING, CREATEDAT, UPDATEDAT) VALUES (:bookId, :userId, :rating, :createdAt, :updatedAt)";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("bookId", rating.getBookId());
-        mapParams.addValue("userId", rating.getUserId());
-        mapParams.addValue("rating", rating.getRating());
-        mapParams.addValue("createdAt", rating.getCreatedAt());
-        mapParams.addValue("updatedAt", rating.getUpdatedAt());
-        jdbcTemplateNamed.update(sql, mapParams);
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("bookId", rating.getBookId());
+        params.addValue("userId", rating.getUserId());
+        params.addValue("rating", rating.getRating());
+        params.addValue("createdAt", rating.getCreatedAt());
+        params.addValue("updatedAt", rating.getUpdatedAt());
+    
+        String selectSql = "SELECT ID FROM RATING WHERE BOOKID = :bookId AND USERID = :userId";
+    
+        try {
+            Integer existingRatingId = jdbcTemplateNamed.queryForObject(selectSql, params, Integer.class);
+    
+            String updateSql = "UPDATE RATING SET RATING = :rating, UPDATEDAT = :updatedAt WHERE ID = :id";
+            params.addValue("id", existingRatingId);
+    
+            jdbcTemplateNamed.update(updateSql, params);
+        } catch (DataAccessException e) {
+            String insertSql = "INSERT INTO RATING (BOOKID, USERID, RATING, CREATEDAT, UPDATEDAT) " +
+                               "VALUES (:bookId, :userId, :rating, :createdAt, :updatedAt)";
+            jdbcTemplateNamed.update(insertSql, params);
+        }
     }
+    
 
     @Override
     public void removeRating(Integer ratingId) {
@@ -76,14 +90,5 @@ public class RatingRepository implements IRatingRepository{
         return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
     }
 
-    @Override
-    public void updateRating(Rating rating) {
-        String sql = "UPDATE RATING SET RATING = :rating, UPDATEDAT = :updatedAt WHERE ID = :id";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("rating", rating.getRating());
-        mapParams.addValue("updatedAt", rating.getUpdatedAt());
-        mapParams.addValue("id", rating.getId());
-        jdbcTemplateNamed.update(sql, mapParams);
-    }
 
 }

@@ -48,8 +48,4 @@ public class RatingService implements IRatingService{
         ratingRepository.removeRating(ratingId);
     }
 
-    @Override
-    public void updateRating(Rating rating) {
-        ratingRepository.updateRating(rating);
-    }
 }

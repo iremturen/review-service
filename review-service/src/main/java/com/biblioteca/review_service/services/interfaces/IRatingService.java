@@ -14,5 +14,4 @@ public interface    IRatingService {
     Integer getRatingCount(Integer bookId);
     void addRating(Rating rating);
     void removeRating(Integer ratingId);
-    void updateRating(Rating rating);
 }
