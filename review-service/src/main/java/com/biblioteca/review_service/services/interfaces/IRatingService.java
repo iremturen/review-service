@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import com.biblioteca.review_service.models.Rating;
 
 @Validated
-public interface    IRatingService {
+public interface IRatingService {
     Double getAverageRating(Integer bookId);
     List<Rating> getAllRatings(Integer bookId);
     List<Rating> getUserRatings(Integer userId);

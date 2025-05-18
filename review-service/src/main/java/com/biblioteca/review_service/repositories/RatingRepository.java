@@ -56,19 +56,17 @@ public class RatingRepository implements IRatingRepository{
         params.addValue("rating", rating.getRating());
         params.addValue("createdAt", rating.getCreatedAt());
         params.addValue("updatedAt", rating.getUpdatedAt());
-    
-        String selectSql = "SELECT ID FROM RATING WHERE BOOKID = :bookId AND USERID = :userId";
-    
-        try {
-            Integer existingRatingId = jdbcTemplateNamed.queryForObject(selectSql, params, Integer.class);
-    
-            String updateSql = "UPDATE RATING SET RATING = :rating, UPDATEDAT = :updatedAt WHERE ID = :id";
-            params.addValue("id", existingRatingId);
-    
+
+        String selectSql = "SELECT COUNT(*) FROM RATING WHERE BOOKID = :bookId AND USERID = :userId";
+        int count = jdbcTemplateNamed.queryForObject(selectSql, params, Integer.class);
+
+        if (count > 0) {
+            String updateSql = "UPDATE RATING SET RATING = :rating, UPDATEDAT = :updatedAt " +
+                    "WHERE BOOKID = :bookId AND USERID = :userId";
             jdbcTemplateNamed.update(updateSql, params);
-        } catch (DataAccessException e) {
+        } else {
             String insertSql = "INSERT INTO RATING (BOOKID, USERID, RATING, CREATEDAT, UPDATEDAT) " +
-                               "VALUES (:bookId, :userId, :rating, :createdAt, :updatedAt)";
+                    "VALUES (:bookId, :userId, :rating, :createdAt, :updatedAt)";
             jdbcTemplateNamed.update(insertSql, params);
         }
     }
