@@ -45,14 +45,27 @@ public class ReviewRepository implements IReviewRepository {
 
     @Override
     public void addReview(Review review) {
-        String sql = "INSERT INTO reviews (bookId, userId, review, createdAt, updatedAt) VALUES (:bookId, :userId, :review, :createdAt, :updatedAt)";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("bookId", review.getBookId());
-        mapParams.addValue("userId", review.getUserId());
-        mapParams.addValue("review", review.getReview());
-        mapParams.addValue("createdAt", review.getCreatedAt());
-        mapParams.addValue("updatedAt", review.getUpdatedAt());
-        jdbcTemplateNamed.update(sql, mapParams);
+        String checkSql = "SELECT COUNT(*) FROM reviews WHERE bookId = :bookId AND userId = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("bookId", review.getBookId())
+                .addValue("userId", review.getUserId());
+
+        Integer count = jdbcTemplateNamed.queryForObject(checkSql, params, Integer.class);
+
+        if (count != null && count > 0) {
+            String updateSql = "UPDATE reviews SET review = :review, updatedAt = :updatedAt " +
+                    "WHERE bookId = :bookId AND userId = :userId";
+            params.addValue("review", review.getReview());
+            params.addValue("updatedAt", review.getUpdatedAt());
+            jdbcTemplateNamed.update(updateSql, params);
+        } else {
+            String insertSql = "INSERT INTO reviews (bookId, userId, review, createdAt, updatedAt) " +
+                    "VALUES (:bookId, :userId, :review, :createdAt, :updatedAt)";
+            params.addValue("review", review.getReview());
+            params.addValue("createdAt", review.getCreatedAt());
+            params.addValue("updatedAt", review.getUpdatedAt());
+            jdbcTemplateNamed.update(insertSql, params);
+        }
     }
 
     @Override

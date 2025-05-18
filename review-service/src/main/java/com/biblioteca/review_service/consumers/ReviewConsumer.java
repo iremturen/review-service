@@ -25,7 +25,7 @@ public class ReviewConsumer {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "review-topic", groupId = "review-group", containerFactory = "ratingKafkaListenerContainerFactory")
+    @KafkaListener(topics = "review-topic", groupId = "review-group", containerFactory = "reviewKafkaListenerContainerFactory")
     public void consumeReviewEvent(ReviewMessage message) {
         try {
             if (message.getActionType() == null) {

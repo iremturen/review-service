@@ -1,6 +1,7 @@
 package com.biblioteca.review_service.kafka;
 
 import com.biblioteca.review_service.dto.RatingMessage;
+import com.biblioteca.review_service.dto.ReviewMessage;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -46,20 +47,26 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, String> stringConsumerFactory() {
+    public ConsumerFactory<String, ReviewMessage> reviewConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "review-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(props);
+
+        JsonDeserializer<ReviewMessage> jsonDeserializer = new JsonDeserializer<>(ReviewMessage.class);
+        jsonDeserializer.setRemoveTypeHeaders(false);
+        jsonDeserializer.addTrustedPackages("*");
+        jsonDeserializer.setUseTypeMapperForKey(true);
+
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), jsonDeserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> stringKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, ReviewMessage> reviewKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ReviewMessage> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(stringConsumerFactory());
+        factory.setConsumerFactory(reviewConsumerFactory());
         return factory;
     }
 }
